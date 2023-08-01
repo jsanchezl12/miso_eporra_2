@@ -1,0 +1,88 @@
+<app-header></app-header>
+<div class="container text-center">
+  <p class="fs-1" align=center>Eventos Deportivos</p>
+</div>
+<div class="row">
+  <div class="col-8">
+    <div  *ngIf="detalleEvento">
+      <app-evento-deportivo-detail [eventoD]="eventoDeportivoSeleccionado"></app-evento-deportivo-detail>
+    </div>
+    <div  *ngIf="crearEvento">
+      <app-evento-deportivo-create></app-evento-deportivo-create>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="demo main_list_cont">
+      <button type="button" class="btn btn-success" (click)="irCrearED()">Crear Evento Deportivo</button>
+      <button type="button" class="btn btn-outline-success ms-1 me-1" (click)="clearAll()" title="Refresh"><i class="bi bi-arrow-repeat"></i></button>
+      <button type="button" class="btn btn-warning" (click)="openModal()" title="Add Money"><i class="bi bi-cash-coin"></i></button>
+      <p>Saldo Actual [{{this.usuarioBase?.usuario}}]: ${{this.usuarioBase?.saldo}}</p>
+      <form class="form-search">
+        <div class="input-group">
+          <input class="form-control form-text searchTerm" maxlength="128" placeholder="Buscar" size="15" type="text" name="search" [(ngModel)]="searchText"/>
+          <!-- <span class="input-group-btn"><button class="btn btn-primary"><i class="fa fa-search fa-lg">&nbsp;</i></button></span> -->
+        </div>
+      </form>
+      <table class="table table-striped table-sm" cellspacing="0" width="100%" id="table_eventos">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nombre Evento Deportivo</th>
+            <th scope="col">Tipo</th>
+            <th scope="col">Estado</th>
+            <!-- <th scope="col">Estado2</th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let evento of eventosDeportivos | filter:searchText | paginate: { itemsPerPage: itemPP, currentPage: page }; index as i" (click)="onSelect(evento, i)">
+          <td>{{evento.id}}</td>
+          <td>{{evento.nombre_EventoDeportivo}}</td>
+          <td>{{evento.tipo}}</td>
+          <td>
+            <div *ngIf="evento.estado == 'True'">
+              <div class="alert alert-success" role="alert" style="vertical-align: middle; display: inline;padding: 6px !important;">
+                Abierto
+              </div>
+            </div>
+            <div *ngIf="evento.estado == 'False'">
+              <div class="alert alert-danger" role="alert" style="vertical-align: middle; display: inline;padding: 6px !important;">
+                Cerrado
+              </div>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <div class="has-text-centered" style="float: right;">
+        <pagination-controls (pageChange)="page = $event"></pagination-controls>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Modal Add Saldo-->
+<div class="modal" tabindex="-1" role="dialog"  [ngStyle]="{'display':display}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Agregar Saldo</h4>
+        <button type="button" class="close" aria-label="Close" (click)="onCloseHandled()"><span aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+
+          <div class="form-group">
+            <label for="saldo_add_user" class="col-form-label">Saldo:</label>
+            <input type="number" class="form-control" id="saldo_add_user"  placeholder="Saldo a añadir (10.00)">
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" (click)="onCloseHandled()" >Close</button>
+        <button type="button" class="btn btn-default" (click)="addSaldoUs()" >Add Saldo</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+

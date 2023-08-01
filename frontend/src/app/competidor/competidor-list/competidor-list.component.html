@@ -1,0 +1,61 @@
+<app-header></app-header>
+<div class="container text-center">
+<p class="fs-1" align=center>Lista de Competidores</p>
+<div class="demo" style="float: right;">
+  <form class="form-search">
+    <div class="input-group">
+      <input class="form-control form-text searchTerm" maxlength="128" placeholder="Buscar" size="15" type="text" name="search" [(ngModel)]="searchText"/>
+      <!--<span class="input-group-btn inline-buttons"><button class="btn btn-primary"><i class="fa fa-search fa-lg">&nbsp;</i></button></span>-->
+    </div>
+  </form>
+</div>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Nombres</th>
+      <th scope="col">Probabilidad</th>
+      <th scope="col">Estado</th>
+      <th scope="col">Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let competidor of competidores | filter:searchText; index as i">
+    <td>{{competidor.id}}</td>
+    <td>{{competidor.nombre_competidor}}</td>
+    <td>{{competidor.probabilidad}}</td>
+    <td>
+      <div *ngIf="competidor.estado == 'True'">
+        <div class="alert alert-success" role="alert" style="vertical-align: middle; display: inline;padding: 6px !important;">
+          Abierto
+        </div>
+      </div>
+      <div *ngIf="competidor.estado == 'False'">
+        <div class="alert alert-danger" role="alert" style="vertical-align: middle; display: inline;padding: 6px !important;">
+          Cerrado
+        </div>
+      </div>
+    </td>
+    <button type="button" class="btn btn-danger algo btnAct">Eliminar <i class="bi bi-trash3-fill"></i></button>
+    <button type="button" class="btn btn-outline-warning algo">Editar <i class="bi bi-pencil-square"></i></button>
+  </tr>
+  </tbody>
+</table>
+<!-- 
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+    <li class="page-item disabled">
+      <a class="page-link">Previous</a>
+    </li>
+    <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item">
+      <a class="page-link" href="#">Next</a>
+    </li>
+  </ul>
+</nav> -->
+<button type="button" class="btn btn-primary algo">Volver</button>
+<button type="button" class="btn btn-primary algo">Adicionar</button>
+<button type="button" class="btn btn-primary algo">Carrera</button>
+

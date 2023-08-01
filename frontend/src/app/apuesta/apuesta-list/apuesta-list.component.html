@@ -1,0 +1,58 @@
+<app-header></app-header>
+<div class="container my-4">
+  <div class="row">
+    <div class="col-8">
+      <div  *ngIf="detalleApuesta">
+        <app-apuesta-detail [carrera]="nombreEventoD" [competidor]="nombreCompetidor"
+          [inputApuesta]="apuestaSeleccionada"></app-apuesta-detail>
+      </div>
+      <div *ngIf="crearApuesta">
+        <app-apuesta-create ></app-apuesta-create>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="card">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-10 text-center">
+              <label class="fs-4">Apuestas</label>
+            </div>
+            <div class="col-2 text-center">
+              <button type="button" class="my-1 btn btn-outline-primary btn-circle" (click)="irCrearApuesta()"><i
+                  class="bi bi-plus-lg"></i></button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <p>Saldo Actual [{{this.usuarioBase?.usuario}}]: ${{this.usuarioBase?.saldo}}</p>
+          <form class="form-search">
+            <div class="input-group my-2">
+              <input class="form-control form-text searchTerm" maxlength="128" placeholder="Buscar" size="15" type="text" name="search" [(ngModel)]="searchText"/>
+            </div>
+          </form>
+
+          <table class="table table-hover mb-0" aria-describedby="colecName">
+            <tbody class="list-group">
+              <tr
+              *ngFor="let apuesta of mostrarApuestas | filter:searchText| paginate: { itemsPerPage: itemPP, currentPage: page }; index as i" (click)="onSelect(apuesta, i)"
+                [ngClass]="{'selected': i === indiceSeleccionado}">
+                <td class="list-group-item list-group-item-action" aria-current="true">
+                    <div class="d-flex w-100 justify-content-between">
+                      <h5 class="mb-1">Apuesta {{apuesta.id}}</h5>
+                    </div>
+                    <p class="mb-1">Apostador {{apuesta.id_apostador}}</p>
+                    <small>Valor: ${{apuesta.valor_apostado}}</small>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="has-text-centered" style="float: right;">
+            <pagination-controls (pageChange)="page = $event"></pagination-controls>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
